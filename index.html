@@ -703,6 +703,70 @@
 .marquee-container:hover .marquee-content {
     animation-play-state: paused;
 }
+/* --- MOBILE MENU ANIMATION --- */
+.menu-toggle {
+    display: none; /* Hidden on Desktop */
+    flex-direction: column;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.menu-toggle span {
+    width: 30px;
+    height: 2px;
+    background: var(--cyan);
+    transition: 0.3s;
+}
+
+/* --- MOBILE RESPONSIVE (MAX 768PX) --- */
+@media (max-width: 768px) {
+    .menu-toggle { display: flex; } /* Show Hamburger */
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Hide off-screen */
+        width: 70%;
+        height: 100vh;
+        background: rgba(2, 2, 5, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1000;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    }
+
+    .nav-links.active {
+        right: 0; /* Slide in menu */
+    }
+
+    /* Fix the Floating Tag Overlap from your video */
+    .floating-tag {
+        font-size: 0.6rem !important;
+        opacity: 0.3; /* Make them subtle so they don't block text */
+        pointer-events: none;
+    }
+
+    /* Font Size Adjustment for "About Me" */
+    .about-card p {
+        font-size: 1rem !important;
+        line-height: 1.5;
+        text-align: left;
+    }
+
+    /* Experience Card Refinement */
+    .experience-item {
+        margin: 15px 0;
+        padding: 20px;
+        background: var(--card-bg);
+        border-radius: 15px;
+    }
+}
 
     </style>
 </head>
@@ -726,18 +790,23 @@
     <div class="floating-tag tag-3">Penetration Testing</div>
     <div class="floating-tag tag-4">Information Security</div>
 </div>
-   <nav>
+  <nav>
     <div class="container nav-container">
         <div class="logo">SELVINA<span>.SWARNA</span></div>
+        
+        <button class="menu-toggle" aria-label="Open Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
         <div class="nav-links">
             <a href="#about">About</a>
-            <a href="#Education">Education</a>
-            <a href="#Experience">Experience</a>
+            <a href="#history">History</a>
             <a href="#vault">Project Vault</a>
             <a href="#Certifications">Certifications</a>
-            <a href="#Technical Stack">Technical Stack</a> 
-            <a href="#Contact">Contact</a>
-
+            <a href="#stack">Technical Stack</a>
+            <a href="#contact">Contact</a>
         </div>
     </div>
 </nav>
@@ -1301,6 +1370,27 @@
     document.addEventListener('mouseenter', () => {
         glow.style.opacity = '1';
     });
+
+    const menuToggle = document.querySelector('.menu-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    
+    // Animate the hamburger into an 'X'
+    const spans = menuToggle.querySelectorAll('span');
+    spans[0].style.transform = navLinks.classList.contains('active') ? 'rotate(45deg) translate(5px, 6px)' : 'none';
+    spans[1].style.opacity = navLinks.classList.contains('active') ? '0' : '1';
+    spans[2].style.transform = navLinks.classList.contains('active') ? 'rotate(-45deg) translate(5px, -7px)' : 'none';
+});
+
+// Close menu when a link is clicked
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+    });
+});
 </script>
+
 </body>
 </html>
